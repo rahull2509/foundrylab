@@ -31,14 +31,14 @@ export default function CTA() {
               Ready to turn your idea into a live product? Book a free 30-min call and let's map out your path to launch.
             </p>
 
-            <form onSubmit={submit} className="mt-10 max-w-xl flex flex-col sm:flex-row gap-3">
+            <form onSubmit={submit} className="mt-8 max-w-xl flex flex-col sm:flex-row gap-3">
               <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com"
                 className="flex-1 rounded-full bg-white/10 border border-white/30 text-white placeholder:text-white/60 px-5 py-4 outline-none focus:border-white focus:bg-white/15 transition-colors" />
               <button type="submit" className="rounded-full bg-white text-[var(--blue)] px-6 py-4 font-medium inline-flex items-center justify-center gap-2 hover:bg-[var(--ink)] hover:text-white transition-colors">
                 Start Your Project <ArrowUpRight size={18} />
               </button>
             </form>
-            <a href="#" className="mt-6 inline-flex items-center gap-2 text-white/85 hover:text-white transition-colors text-sm">
+            <a href="#" className="mt-3 inline-flex items-center gap-2 text-white/85 hover:text-white transition-colors text-sm">
               <Calendar size={16} /> Or book a free call →
             </a>
           </div>

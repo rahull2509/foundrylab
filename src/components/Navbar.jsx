@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Menu, X, ArrowUpRight, Moon, Sun } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 import { navLinks } from "../mock";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -14,20 +13,9 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const resolvedTheme = savedTheme || (prefersDark ? "dark" : "light");
-    setTheme(resolvedTheme);
-    document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
+    document.documentElement.classList.remove("dark");
+    localStorage.setItem("theme", "light");
   }, []);
-
-  useEffect(() => {
-    if (!theme) return;
-    document.documentElement.classList.toggle("dark", theme === "dark");
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  const toggleTheme = () => setTheme((prev) => (prev === "dark" ? "light" : "dark"));
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -56,13 +44,6 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full border hairline text-[var(--ink)] hover:bg-[color:var(--bg-2)] transition-colors"
-              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            >
-              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
             <div className="hidden md:flex items-center gap-2 mono text-[11px] text-[var(--muted)] px-3">
               <span className="w-2 h-2 rounded-full bg-green-500 pulse-dot" />
               AVAILABLE Q3

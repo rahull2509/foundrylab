@@ -200,7 +200,7 @@ export default function Hero() {
           </p>
 
           <div ref={ctaRef} className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <a href="#contact" className="btn-blue rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2">
+            <a href="#contact" className="btn-blue relative -top-7 rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2">
               Start Your Project <ArrowUpRight size={16} />
             </a>
             <a href="#contact" className="btn-ghost rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2">
