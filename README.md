@@ -6,3 +6,4 @@
 - `npm run build`: Create production build in `build/`
 - `npm run preview`: Preview the production build locally
 - `npm test`: Run tests with Vitest (`--passWithNoTests`)
+        
