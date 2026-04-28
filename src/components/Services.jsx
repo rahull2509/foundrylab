@@ -51,31 +51,53 @@ export default function Services() {
             const Icon = ICONS[s.icon] || Rocket;
             const isDark = s.badge === "Most Popular";
             return (
-              <div key={s.id} data-service-card className={`${isDark ? "card-dark" : "card"} p-8 md:p-10 relative group overflow-hidden`}>
-                <div className={`absolute -right-20 -top-20 w-64 h-64 rounded-full transition-transform duration-700 ${isDark ? "bg-[var(--blue)]/20" : "bg-[var(--blue)]/5"} group-hover:scale-150`} />
+              <div
+                key={s.id}
+                data-service-card
+                className={`${isDark ? "card-dark" : "card"} p-8 md:p-10 relative group overflow-hidden`}
+              >
+                <div
+                  className={`absolute -right-24 -top-24 w-72 h-72 rounded-full transition-transform duration-700 ${isDark ? "bg-[var(--blue)]/25" : "bg-[var(--blue)]/7"} group-hover:scale-150`}
+                />
+                <div
+                  className={`absolute -left-28 -bottom-28 w-80 h-80 rounded-full transition-transform duration-700 ${isDark ? "bg-white/10" : "bg-[var(--ink)]/5"} group-hover:scale-110`}
+                />
                 <div className="relative">
                   <div className="flex items-center justify-between mb-8">
-                    <div className={`w-14 h-14 rounded-xl grid place-items-center ${isDark ? "bg-[var(--blue)]" : "bg-[var(--ink)]"}`}>
+                    <div className={`w-14 h-14 rounded-2xl grid place-items-center shadow-[0_18px_40px_-18px_rgba(0,0,0,0.45)] ${isDark ? "bg-[var(--blue)]" : "bg-[var(--ink)]"}`}>
                       <Icon size={22} className="text-white" />
                     </div>
-                    {s.badge && (
-                      <span className="mono text-[10px] uppercase tracking-widest bg-[var(--blue)] text-white rounded-full px-3 py-1">
+                    <div className={`mono text-[11px] tabular-nums ${isDark ? "text-[var(--bg)]/55" : "text-[var(--muted)]"}`}>0{s.id}</div>
+                  </div>
+
+                  {s.badge && (
+                    <div className="absolute top-9 left-1/2 -translate-x-1/2">
+                      <span className="mono text-[10px] uppercase tracking-widest bg-[var(--blue)] text-white rounded-full px-3.5 py-1.5 shadow-[0_18px_40px_-18px_rgba(0,71,255,0.7)]">
                         {s.badge}
                       </span>
-                    )}
-                    <div className={`mono text-[11px] ${isDark ? "text-[var(--bg)]/50" : "text-[var(--muted)]"}`}>0{s.id}</div>
-                  </div>
+                    </div>
+                  )}
+
                   <h3 className={`serif text-3xl md:text-4xl mb-3 ${isDark ? "text-[var(--bg)]" : "text-[var(--ink)]"}`}>
                     {s.title}
                   </h3>
                   <p className={`${isDark ? "text-[var(--bg)]/70" : "text-[var(--muted)]"} leading-relaxed max-w-md`}>
                     {s.desc}
                   </p>
-                  <div className="mt-10 flex items-center justify-between">
-                    <a href="#contact" className={`inline-flex items-center gap-2 text-sm ${isDark ? "text-[var(--bg)]" : "text-[var(--ink)]"}`}>
+
+                  <div className={`mt-9 h-px w-full ${isDark ? "bg-white/10" : "bg-[var(--line)]"}`} />
+
+                  <div className="mt-6 flex items-center justify-between">
+                    <a
+                      href="#contact"
+                      className={`inline-flex items-center gap-2 text-sm ${isDark ? "text-[var(--bg)]" : "text-[var(--ink)]"}`}
+                    >
                       <span className="link-underline">Learn more</span>
                       <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                     </a>
+                    <span className={`mono text-[10px] tracking-widest ${isDark ? "text-white/55" : "text-[var(--muted)]"}`}>
+                      DETAILS
+                    </span>
                   </div>
                 </div>
               </div>

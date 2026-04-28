@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, Calendar, Sparkles, Circle, ArrowDown, Star } from "lucide-react";
 import { stats } from "../mock";
 import CountUp from "./CountUp";
+import ShapeGrid from "./ShapeGrid";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -77,9 +78,46 @@ export default function Hero() {
   };
 
   return (
-    <section id="hero" ref={rootRef} className="relative pt-32 md:pt-36 pb-20 md:pb-24 overflow-hidden noise">
-      {/* Background grid */}
-      <div className="absolute inset-0 grid-bg opacity-50 pointer-events-none" />
+    <section id="hero" ref={rootRef} className="relative min-h-screen pt-28 md:pt-36 pb-20 md:pb-24 overflow-hidden noise">
+      {/* ShapeGrid background (subtle, masked) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          maskImage: "radial-gradient(circle at center, black 0%, rgba(0,0,0,0.35) 55%, transparent 78%)",
+          WebkitMaskImage: "radial-gradient(circle at center, black 0%, rgba(0,0,0,0.35) 55%, transparent 78%)",
+        }}
+      >
+        <ShapeGrid
+          direction="diagonal"
+          speed={0.35}
+          squareSize={44}
+          borderColor="rgba(5, 7, 18, 0.10)"
+          hoverFillColor="rgba(0, 71, 255, 0.05)"
+          shape="square"
+          hoverTrailAmount={0}
+        />
+      </div>
+
+      {/* Background grid (masked so edges fade) */}
+      <div
+        className="absolute inset-0 grid-bg opacity-[0.38] pointer-events-none"
+        style={{
+          maskImage: "radial-gradient(circle at center, black 0%, rgba(0,0,0,0.35) 55%, transparent 78%)",
+          WebkitMaskImage: "radial-gradient(circle at center, black 0%, rgba(0,0,0,0.35) 55%, transparent 78%)",
+        }}
+      />
+
+      {/* Vignette + depth wash */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(900px 620px at 50% 40%, rgba(0,71,255,0.09), transparent 60%)," +
+            "radial-gradient(1100px 720px at 50% 120%, rgba(5,7,18,0.07), transparent 55%)," +
+            "radial-gradient(1000px 700px at -10% 10%, rgba(0,71,255,0.06), transparent 60%)," +
+            "radial-gradient(1200px 900px at 110% -10%, rgba(5,7,18,0.05), transparent 55%)",
+        }}
+      />
 
       {/* Center glow orb */}
       <div ref={orbRef} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] max-w-[120vw] max-h-[120vh] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(0,71,255,0.16) 0%, rgba(0,71,255,0.04) 40%, transparent 70%)" }} />
@@ -170,22 +208,22 @@ export default function Hero() {
       <div className="relative z-[2] max-w-[1240px] mx-auto px-6 md:px-10">
         <div className="text-center">
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <div className="inline-flex items-center gap-2 rounded-full border hairline bg-[color:var(--surface)]/85 backdrop-blur px-3 py-1.5 mono text-[11px] text-[var(--ink)]/85">
+            <div className="inline-flex items-center gap-2 rounded-full border hairline bg-[color:var(--surface)]/80 backdrop-blur-md px-3 py-1.5 mono text-[11px] text-[var(--ink)]/85 shadow-[0_18px_40px_-22px_rgba(5,7,18,0.25)]">
               <Sparkles size={12} className="text-[var(--blue)]" />
               NOW BOOKING Q3 MVP SPRINTS
             </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-[var(--ink)] text-[var(--bg)] px-3 py-1.5 mono text-[10px] tracking-widest">
+            <div className="inline-flex items-center gap-2 rounded-full bg-[var(--ink)] text-[var(--bg)] px-3 py-1.5 mono text-[10px] tracking-widest shadow-[0_18px_40px_-22px_rgba(5,7,18,0.35)]">
               <Circle size={6} className="fill-[#4ADE80] text-[#4ADE80]" /> 5 SPOTS LEFT
             </div>
           </div>
 
           <h1
             ref={h1Ref}
-            className="serif mx-auto mt-8 tracking-tight"
+            className="serif mx-auto mt-9 tracking-tight"
             style={{
-              fontSize: "clamp(44px, 8.6vw, 112px)",
-              lineHeight: 0.94,
-              maxWidth: "min(1040px, 92vw)",
+              fontSize: "clamp(44px, 8.8vw, 116px)",
+              lineHeight: 0.92,
+              maxWidth: "min(1100px, 94vw)",
             }}
           >
             <span data-word>We&nbsp;</span><span data-word>Turn&nbsp;</span><span data-word>Your&nbsp;</span><span data-word>Startup</span>
@@ -194,16 +232,16 @@ export default function Hero() {
             <span className="italic-serif text-[var(--blue)]"><span data-word>Live&nbsp;</span><span data-word>Product</span></span>
           </h1>
 
-          <p ref={subRef} className="mt-7 max-w-2xl mx-auto text-base md:text-lg text-[var(--muted)] leading-relaxed">
+          <p ref={subRef} className="mt-7 max-w-2xl mx-auto text-[15px] md:text-lg text-[var(--muted)] leading-relaxed">
             From idea to MVP to scalable product, we ship with founder-level speed and clarity.
             <span className="text-[var(--ink)] font-medium"> No fluff. Just execution.</span>
           </p>
 
-          <div ref={ctaRef} className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <a href="#contact" className="btn-blue relative -top-7 rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2">
+          <div ref={ctaRef} className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <a href="#contact" className="btn-blue rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2 shadow-[0_22px_50px_-22px_rgba(0,71,255,0.55)]">
               Start Your Project <ArrowUpRight size={16} />
             </a>
-            <a href="#contact" className="btn-ghost rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2">
+            <a href="#contact" className="btn-ghost rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2 bg-[color:var(--surface)]/60 backdrop-blur-md">
               <Calendar size={15} /> Book a Free Call
             </a>
           </div>
@@ -221,7 +259,7 @@ export default function Hero() {
           {/* Stats */}
           <div ref={statsRef} className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
             {stats.map((s, i) => (
-              <div key={s.label} className="rounded-2xl border hairline bg-[color:var(--surface)]/75 px-4 py-5 md:px-5 md:py-6">
+              <div key={s.label} className="rounded-2xl border hairline bg-[color:var(--surface)]/70 backdrop-blur-md px-4 py-5 md:px-5 md:py-6 shadow-[0_24px_60px_-40px_rgba(5,7,18,0.25)] transition-transform duration-500 ease-out hover:-translate-y-1">
                 <div className="serif text-[40px] md:text-[52px] tracking-tight leading-none">
                   <span className={i % 2 === 0 ? "text-[var(--blue)]" : "text-[var(--ink)]"}>{renderStat(s)}</span>
                 </div>

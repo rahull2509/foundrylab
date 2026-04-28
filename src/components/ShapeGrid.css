@@ -1,0 +1,12 @@
+.shapegrid-canvas {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  /* Keep the grid readable under the hero noise/glow layers. */
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
