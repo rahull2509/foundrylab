@@ -195,10 +195,25 @@ export default function AIDesk() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [panelSize, setPanelSize] = useState({ width: 390, height: 520 });
+  const [isMobileLike, setIsMobileLike] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px), (pointer: coarse)");
+    const sync = () => setIsMobileLike(media.matches);
+    sync();
+    media.addEventListener?.("change", sync);
+    return () => media.removeEventListener?.("change", sync);
+  }, []);
+
   useEffect(() => {
     if (!threadRef.current) return;
     threadRef.current.scrollTop = threadRef.current.scrollHeight;
   }, [messages, loading]);
+
+  useEffect(() => {
+    if (!isMobileLike) return;
+    setPanelSize({ width: Math.min(window.innerWidth - 16, 390), height: Math.min(window.innerHeight - 24, 560) });
+  }, [isMobileLike]);
 
   useEffect(() => {
     const handle = resizeRef.current;
@@ -282,13 +297,13 @@ export default function AIDesk() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[70] flex max-w-[calc(100vw-1.5rem)] flex-col items-end gap-3 md:bottom-8 md:right-8">
+    <div className="fixed bottom-4 right-4 z-[70] flex max-w-[calc(100vw-1rem)] flex-col items-end gap-3 md:bottom-8 md:right-8">
       {open && (
         <div
           className="relative w-[calc(100vw-1.5rem)] overflow-hidden rounded-[28px] border hairline bg-[var(--surface)] shadow-[0_28px_90px_-32px_rgba(5,7,18,0.45)] backdrop-blur-md"
           style={{
-            width: `min(calc(100vw - 1.5rem), ${panelSize.width}px)`,
-            height: `min(calc(100vh - 2rem), ${panelSize.height}px)`,
+            width: isMobileLike ? "calc(100vw - 1rem)" : `min(calc(100vw - 1.5rem), ${panelSize.width}px)`,
+            height: isMobileLike ? "min(calc(100vh - 1rem), 78vh)" : `min(calc(100vh - 2rem), ${panelSize.height}px)`,
           }}
         >
           <div className="bg-[linear-gradient(135deg,var(--ink)_0%,#0E1730_100%)] px-5 py-4 text-white">

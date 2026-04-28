@@ -23,17 +23,23 @@ import { Toaster } from "./components/ui/toaster";
 
 function Home() {
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    });
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
+    const isMobileLike = window.matchMedia("(max-width: 1024px), (pointer: coarse)").matches;
+    let lenis = null;
+    let rafId = 0;
+
+    if (!isMobileLike) {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+      });
+      const raf = (time) => {
+        lenis.raf(time);
+        rafId = requestAnimationFrame(raf);
+      };
+      rafId = requestAnimationFrame(raf);
+      window.lenis = lenis;
     }
-    requestAnimationFrame(raf);
-    window.lenis = lenis;
 
     // Suppress R3F dev __source-prop noise from CRA overlay
     const removeOverlay = () => {
@@ -55,7 +61,8 @@ function Home() {
     const interval = setInterval(removeOverlay, 300);
 
     return () => {
-      lenis.destroy();
+      if (rafId) cancelAnimationFrame(rafId);
+      lenis?.destroy();
       window.removeEventListener("error", onError, true);
       window.removeEventListener("unhandledrejection", onError, true);
       clearInterval(interval);

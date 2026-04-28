@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 
 export default function Loader() {
+  const isMobileLike = typeof window !== "undefined" && window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
   const [done, setDone] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(isMobileLike ? 100 : 0);
 
   useEffect(() => {
+    if (isMobileLike) {
+      const id = setTimeout(() => setDone(true), 120);
+      return () => clearTimeout(id);
+    }
+
     let p = 0;
     const id = setInterval(() => {
       p += Math.random() * 18 + 6;

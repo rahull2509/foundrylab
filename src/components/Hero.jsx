@@ -17,11 +17,21 @@ export default function Hero() {
   const orbRef = useRef(null);
   const floatersRef = useRef(null);
   const [count, setCount] = useState(12847);
+  const [isMobileLike, setIsMobileLike] = useState(false);
 
   useEffect(() => {
+    const media = window.matchMedia("(max-width: 1024px), (pointer: coarse)");
+    const sync = () => setIsMobileLike(media.matches);
+    sync();
+    media.addEventListener?.("change", sync);
+    return () => media.removeEventListener?.("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (isMobileLike) return undefined;
     const id = setInterval(() => setCount((c) => c + Math.floor(Math.random() * 6) + 1), 1700);
     return () => clearInterval(id);
-  }, []);
+  }, [isMobileLike]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -41,22 +51,34 @@ export default function Hero() {
         });
       });
 
-      const tl = gsap.timeline({ defaults: { ease: "expo.out" }, delay: 0.5 });
-      tl.to(h1.querySelectorAll("[data-word] > span"), { y: 0, duration: 1.1, stagger: { each: 0.012 } }, 0)
-        .from(subRef.current, { y: 30, opacity: 0, duration: 0.9 }, 0.5)
-        .from(ctaRef.current.children, { y: 30, opacity: 0, duration: 0.8, stagger: 0.08 }, 0.6)
-        .from(statsRef.current.children, { y: 40, opacity: 0, duration: 0.8, stagger: 0.08 }, 0.8)
-        .from(floatersRef.current.children, { scale: 0.6, opacity: 0, y: 40, duration: 1, stagger: 0.07 }, 0.3);
+      if (isMobileLike) {
+        gsap.set(h1.querySelectorAll("[data-word] > span"), { y: 0 });
+        gsap.from([subRef.current, ctaRef.current, statsRef.current], {
+          y: 18,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: "power2.out",
+        });
+      } else {
+        const tl = gsap.timeline({ defaults: { ease: "expo.out" }, delay: 0.5 });
+        tl.to(h1.querySelectorAll("[data-word] > span"), { y: 0, duration: 1.1, stagger: { each: 0.012 } }, 0)
+          .from(subRef.current, { y: 30, opacity: 0, duration: 0.9 }, 0.5)
+          .from(ctaRef.current.children, { y: 30, opacity: 0, duration: 0.8, stagger: 0.08 }, 0.6)
+          .from(statsRef.current.children, { y: 40, opacity: 0, duration: 0.8, stagger: 0.08 }, 0.8)
+          .from(floatersRef.current.children, { scale: 0.6, opacity: 0, y: 40, duration: 1, stagger: 0.07 }, 0.3);
 
-      gsap.to(orbRef.current, {
-        y: -120,
-        scrollTrigger: { trigger: rootRef.current, start: "top top", end: "bottom top", scrub: 0.6 },
-      });
+        gsap.to(orbRef.current, {
+          y: -120,
+          scrollTrigger: { trigger: rootRef.current, start: "top top", end: "bottom top", scrub: 0.6 },
+        });
+      }
     }, rootRef);
     return () => ctx.revert();
-  }, []);
+  }, [isMobileLike]);
 
   useEffect(() => {
+    if (isMobileLike) return undefined;
     const onMove = (e) => {
       const x = e.clientX / window.innerWidth - 0.5;
       const y = e.clientY / window.innerHeight - 0.5;
@@ -68,7 +90,7 @@ export default function Hero() {
     };
     window.addEventListener("mousemove", onMove);
     return () => window.removeEventListener("mousemove", onMove);
-  }, []);
+  }, [isMobileLike]);
 
   const renderStat = (s) => {
     const m = s.value.match(/([\u20B9]?)([\d.]+)([^\d.]*)/);
@@ -81,7 +103,7 @@ export default function Hero() {
     <section id="hero" ref={rootRef} className="relative min-h-screen pt-28 md:pt-36 pb-20 md:pb-24 overflow-hidden noise">
       {/* ShapeGrid background (subtle, masked) */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none hidden md:block"
         style={{
           maskImage: "radial-gradient(circle at center, black 0%, rgba(0,0,0,0.35) 55%, transparent 78%)",
           WebkitMaskImage: "radial-gradient(circle at center, black 0%, rgba(0,0,0,0.35) 55%, transparent 78%)",
