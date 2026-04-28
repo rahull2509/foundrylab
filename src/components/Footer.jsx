@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Mail, ArrowUpRight } from "lucide-react";
+import { Mail, ArrowUpRight, Phone } from "lucide-react";
 import { footerLinks } from "../mock";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -37,6 +37,9 @@ export default function Footer() {
             </p>
             <a href="mailto:contact@foundrylab.com" className="inline-flex items-center gap-2 mt-6 text-[var(--bg)]/80 hover:text-[var(--blue-2)]">
               <Mail size={16} /> contact@foundrylab.com
+            </a>
+            <a href="tel:+917830241468" className="inline-flex items-center gap-2 mt-3 text-[var(--bg)]/80 hover:text-[var(--blue-2)]">
+              <Phone size={16} /> +91 78302 41468
             </a>
           </div>
 

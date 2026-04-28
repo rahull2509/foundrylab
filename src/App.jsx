@@ -14,6 +14,7 @@ import Services from "./components/Services";
 import Process from "./components/Process";
 import Work from "./components/Work";
 import WhyUs from "./components/WhyUs";
+import AIDesk from "./components/AIDesk";
 import Pricing from "./components/Pricing";
 import Testimonials from "./components/Testimonials";
 import CTA from "./components/CTA";
@@ -67,6 +68,7 @@ function Home() {
       <Cursor />
       <SideRail />
       <FloatingCTA />
+      <AIDesk />
       <Navbar />
       <main>
         <Hero />

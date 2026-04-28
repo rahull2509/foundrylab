@@ -237,23 +237,25 @@ export default function Hero() {
             <span className="text-[var(--ink)] font-medium"> No fluff. Just execution.</span>
           </p>
 
-          <div ref={ctaRef} className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <a href="#contact" className="btn-blue rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2 shadow-[0_22px_50px_-22px_rgba(0,71,255,0.55)]">
-              Start Your Project <ArrowUpRight size={16} />
-            </a>
-            <a href="#contact" className="btn-ghost rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2 bg-[color:var(--surface)]/60 backdrop-blur-md">
-              <Calendar size={15} /> Book a Free Call
-            </a>
-          </div>
+          <div className="mt-5 flex flex-col items-center">
+            <div ref={ctaRef} className="flex flex-wrap items-center justify-center gap-3 md:-translate-y-1">
+              <a href="#contact" className="btn-blue rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2 shadow-[0_22px_50px_-22px_rgba(0,71,255,0.55)]">
+                Start Your Project <ArrowUpRight size={16} />
+              </a>
+              <a href="#contact" className="btn-ghost rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2 bg-[color:var(--surface)]/60 backdrop-blur-md">
+                <Calendar size={15} /> Book a Free Call
+              </a>
+            </div>
 
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3 mono text-[11px] text-[var(--muted)]">
-            <span className="flex -space-x-2">
-              <span className="w-7 h-7 rounded-full bg-[var(--blue)] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">RK</span>
-              <span className="w-7 h-7 rounded-full bg-[var(--ink)] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">PS</span>
-              <span className="w-7 h-7 rounded-full bg-[#10B981] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">AV</span>
-              <span className="w-7 h-7 rounded-full bg-[#F59E0B] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">+</span>
-            </span>
-            <span>Trusted by 40+ founders worldwide</span>
+            <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-3 rounded-full bg-[color:var(--surface)]/45 px-3 py-2 backdrop-blur-sm mono text-[11px] text-[var(--muted)]">
+              <span className="flex -space-x-2">
+                <span className="w-7 h-7 rounded-full bg-[var(--blue)] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">RK</span>
+                <span className="w-7 h-7 rounded-full bg-[var(--ink)] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">PS</span>
+                <span className="w-7 h-7 rounded-full bg-[#10B981] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">AV</span>
+                <span className="w-7 h-7 rounded-full bg-[#F59E0B] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">+</span>
+              </span>
+              <span>Trusted by 40+ founders worldwide</span>
+            </div>
           </div>
 
           {/* Stats */}

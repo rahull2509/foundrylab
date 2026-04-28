@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowUpRight, Calendar } from "lucide-react";
+import { ArrowUpRight, Calendar, MessageCircleMore, Phone } from "lucide-react";
 import { useToast } from "../hooks/use-toast";
 import CTAVisual from "./CTAVisual";
 
@@ -31,6 +31,15 @@ export default function CTA() {
               Ready to turn your idea into a live product? Book a free 30-min call and let's map out your path to launch.
             </p>
 
+            <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-white/90">
+              <a href="tel:+917830241468" className="inline-flex items-center gap-2 rounded-full border border-white/25 px-4 py-2 hover:bg-white/10 transition-colors">
+                <Phone size={15} /> +91 78302 41468
+              </a>
+              <a href="https://wa.me/917830241468" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/25 px-4 py-2 hover:bg-white/10 transition-colors">
+                <MessageCircleMore size={15} /> WhatsApp
+              </a>
+            </div>
+
             <form onSubmit={submit} className="mt-8 max-w-xl flex flex-col sm:flex-row gap-3">
               <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com"
                 className="flex-1 rounded-full bg-white/10 border border-white/30 text-white placeholder:text-white/60 px-5 py-4 outline-none focus:border-white focus:bg-white/15 transition-colors" />
@@ -38,8 +47,8 @@ export default function CTA() {
                 Start Your Project <ArrowUpRight size={18} />
               </button>
             </form>
-            <a href="#" className="mt-3 inline-flex items-center gap-2 text-white/85 hover:text-white transition-colors text-sm">
-              <Calendar size={16} /> Or book a free call →
+            <a href="tel:+917830241468" className="mt-3 inline-flex items-center gap-2 text-white/85 hover:text-white transition-colors text-sm">
+              <Calendar size={16} /> Or call Keshav directly →
             </a>
           </div>
         </div>

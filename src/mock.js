@@ -1,10 +1,10 @@
 // Mock data for FoundryLab clone
 
 export const stats = [
-  { value: "40+", label: "Products Launched" },
+  { value: "10+", label: "Projects Delivered" },
   { value: "98%", label: "Client Satisfaction" },
   { value: "3 wks", label: "Avg MVP Time" },
-  { value: "\u20B95Cr+", label: "Raised by Clients" },
+  { value: "\u20B96L+", label: "Raised by Clients" },
 ];
 
 export const trustedLogos = [
