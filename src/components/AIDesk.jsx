@@ -298,119 +298,119 @@ export default function AIDesk() {
 
   return (
     <div className="fixed bottom-4 right-4 z-[70] flex max-w-[calc(100vw-1rem)] flex-col items-end gap-3 md:bottom-8 md:right-8">
-      {open && (
+      <div
+        className={`relative overflow-hidden rounded-[28px] border hairline bg-[var(--surface)] shadow-[0_28px_90px_-32px_rgba(5,7,18,0.45)] backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          open ? "scale-100 opacity-100 translate-y-0" : "scale-95 opacity-0 translate-y-8 pointer-events-none"
+        }`}
+        style={{
+          width: isMobileLike ? "calc(100vw - 1rem)" : `min(calc(100vw - 1.5rem), ${panelSize.width}px)`,
+          height: isMobileLike ? "min(calc(100vh - 1rem), 78vh)" : `min(calc(100vh - 2rem), ${panelSize.height}px)`,
+        }}
+      >
+        <div className="bg-[linear-gradient(135deg,var(--ink)_0%,#0E1730_100%)] px-5 py-4 text-white">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="grid h-11 w-11 place-items-center rounded-2xl bg-[var(--blue)] shadow-[0_18px_40px_-18px_rgba(0,71,255,0.65)]">
+                <Bot size={18} />
+              </div>
+              <div>
+                <div className="serif text-xl leading-none">FoundryLab AI</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                aria-label="Minimize chat"
+              >
+                <Minimize2 size={16} />
+              </button>
+            </div>
+          </div>
+
+        </div>
+
         <div
-          className="relative w-[calc(100vw-1.5rem)] overflow-hidden rounded-[28px] border hairline bg-[var(--surface)] shadow-[0_28px_90px_-32px_rgba(5,7,18,0.45)] backdrop-blur-md"
-          style={{
-            width: isMobileLike ? "calc(100vw - 1rem)" : `min(calc(100vw - 1.5rem), ${panelSize.width}px)`,
-            height: isMobileLike ? "min(calc(100vh - 1rem), 78vh)" : `min(calc(100vh - 2rem), ${panelSize.height}px)`,
-          }}
+          ref={threadRef}
+          className="overflow-y-auto bg-[linear-gradient(180deg,#FFFFFF_0%,#F7F9FC_100%)] px-4 pb-4 pt-5"
+          style={{ height: `calc(100% - 175px)` }}
         >
-          <div className="bg-[linear-gradient(135deg,var(--ink)_0%,#0E1730_100%)] px-5 py-4 text-white">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="grid h-11 w-11 place-items-center rounded-2xl bg-[var(--blue)] shadow-[0_18px_40px_-18px_rgba(0,71,255,0.65)]">
-                  <Bot size={18} />
+          <div className="space-y-4">
+            {messages.map((message, index) => (
+              <div
+                key={`${message.role}-${index}`}
+                className={`max-w-[88%] rounded-[22px] px-4 py-3 ${
+                  message.role === "assistant"
+                    ? "border hairline bg-[var(--surface)] text-[var(--ink)] shadow-[0_18px_40px_-34px_rgba(5,7,18,0.25)]"
+                    : "ml-auto bg-[linear-gradient(135deg,var(--blue)_0%,#2F66FF_100%)] text-white shadow-[0_24px_54px_-28px_rgba(0,71,255,0.6)]"
+                }`}
+              >
+                <div className="mb-2 mono text-[10px] tracking-[0.18em] opacity-55">
+                  {message.role === "assistant" ? "FOUNDRYLAB" : "YOU"}
                 </div>
-                <div>
-                  <div className="serif text-xl leading-none">FoundryLab AI</div>
+                <p className="whitespace-pre-line text-[14px] leading-relaxed">{renderFormattedText(message.content)}</p>
+              </div>
+            ))}
+
+            {loading && (
+              <div className="max-w-[88%] rounded-[22px] border hairline bg-[var(--surface)] px-4 py-3 shadow-[0_18px_40px_-34px_rgba(5,7,18,0.25)]">
+                <div className="mb-2 mono text-[10px] tracking-[0.18em] opacity-55">FOUNDRYLAB</div>
+                <div className="inline-flex items-center gap-2 text-[14px] text-[var(--muted)]">
+                  <LoaderCircle size={15} className="animate-spin" />
+                  Thinking...
                 </div>
               </div>
-              <div className="flex items-center gap-1">
+            )}
+          </div>
+        </div>
+
+        <div className="border-t hairline bg-[color:var(--surface)]/96 p-3 md:p-4">
+          <form onSubmit={handleSubmit}>
+            <div className="rounded-[22px] border hairline bg-[var(--surface-2)] px-3 py-2.5 shadow-sm">
+              <textarea
+                value={input}
+                onChange={(event) => setInput(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    void sendMessage(input);
+                  }
+                }}
+                placeholder="Ask anything..."
+                rows={1}
+                className="max-h-24 min-h-[24px] w-full resize-none bg-transparent px-1 py-1 text-[14px] leading-relaxed outline-none placeholder:text-[var(--muted-2)]"
+              />
+              <div className="mt-2 flex items-center justify-between gap-2 border-t hairline pt-2">
                 <button
                   type="button"
-                  onClick={() => setOpen(false)}
-                  className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
-                  aria-label="Minimize chat"
+                  onClick={() => setMessages(initialMessages)}
+                  className="inline-flex items-center gap-2 rounded-full border hairline px-3 py-1.5 mono text-[9px] tracking-[0.1em] text-[var(--muted)] transition-colors hover:bg-[var(--surface)]"
                 >
-                  <Minimize2 size={16} />
+                  <TimerReset size={12} />
+                  RESET
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading || !input.trim()}
+                  className="inline-flex items-center justify-center gap-2 rounded-full btn-blue px-4 py-2 text-sm font-medium disabled:opacity-40"
+                >
+                  Send <Send size={14} />
                 </button>
               </div>
             </div>
-
-          </div>
-
-          <div
-            ref={threadRef}
-            className="overflow-y-auto bg-[linear-gradient(180deg,#FFFFFF_0%,#F7F9FC_100%)] px-4 pb-4 pt-5"
-            style={{ height: `calc(100% - 168px)` }}
-          >
-            <div className="space-y-4">
-              {messages.map((message, index) => (
-                <div
-                  key={`${message.role}-${index}`}
-                  className={`max-w-[88%] rounded-[22px] px-4 py-3 ${
-                    message.role === "assistant"
-                      ? "border hairline bg-[var(--surface)] text-[var(--ink)] shadow-[0_18px_40px_-34px_rgba(5,7,18,0.25)]"
-                      : "ml-auto bg-[linear-gradient(135deg,var(--blue)_0%,#2F66FF_100%)] text-white shadow-[0_24px_54px_-28px_rgba(0,71,255,0.6)]"
-                  }`}
-                >
-                  <div className="mb-2 mono text-[10px] tracking-[0.18em] opacity-55">
-                    {message.role === "assistant" ? "FOUNDRYLAB" : "YOU"}
-                  </div>
-                  <p className="whitespace-pre-line text-[14px] leading-relaxed">{renderFormattedText(message.content)}</p>
-                </div>
-              ))}
-
-              {loading && (
-                <div className="max-w-[88%] rounded-[22px] border hairline bg-[var(--surface)] px-4 py-3 shadow-[0_18px_40px_-34px_rgba(5,7,18,0.25)]">
-                  <div className="mb-2 mono text-[10px] tracking-[0.18em] opacity-55">FOUNDRYLAB</div>
-                  <div className="inline-flex items-center gap-2 text-[14px] text-[var(--muted)]">
-                    <LoaderCircle size={15} className="animate-spin" />
-                    Thinking through the best answer...
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="border-t hairline bg-[color:var(--surface)]/96 p-4">
-            <form onSubmit={handleSubmit}>
-              <div className="rounded-[22px] border hairline bg-[var(--surface-2)] px-3 py-2.5">
-                <textarea
-                  value={input}
-                  onChange={(event) => setInput(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" && !event.shiftKey) {
-                      event.preventDefault();
-                      void sendMessage(input);
-                    }
-                  }}
-                  placeholder="Ask anything about your product or project..."
-                  rows={1}
-                  className="max-h-28 min-h-[24px] w-full resize-none bg-transparent px-1 py-1 text-[14px] leading-relaxed outline-none placeholder:text-[var(--muted-2)]"
-                />
-                <div className="mt-2 flex items-center justify-between gap-2 border-t hairline pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setMessages(initialMessages)}
-                    className="inline-flex items-center gap-2 rounded-full border hairline px-3 py-2 mono text-[10px] tracking-[0.18em] text-[var(--muted)] transition-colors hover:bg-[var(--surface)]"
-                  >
-                    <TimerReset size={12} />
-                    RESET
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={loading || !input.trim()}
-                    className="inline-flex items-center justify-center gap-2 rounded-full btn-blue px-4 py-2.5 text-sm font-medium disabled:opacity-50 disabled:hover:bg-[var(--blue)]"
-                  >
-                    Send <Send size={14} />
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <button
-            ref={resizeRef}
-            type="button"
-            className="absolute bottom-2 right-2 hidden h-8 w-8 cursor-se-resize place-items-center rounded-full text-[var(--muted)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--ink)] md:grid"
-            aria-label="Resize chat"
-          >
-            <MoveDiagonal2 size={15} />
-          </button>
+          </form>
         </div>
-      )}
+
+        <button
+          ref={resizeRef}
+          type="button"
+          className="absolute bottom-2 right-2 hidden h-8 w-8 cursor-se-resize place-items-center rounded-full text-[var(--muted)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--ink)] md:grid"
+          aria-label="Resize chat"
+        >
+          <MoveDiagonal2 size={15} />
+        </button>
+      </div>
 
       {!open && (
         <button

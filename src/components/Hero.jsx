@@ -260,23 +260,34 @@ export default function Hero() {
           </p>
 
           <div className="mt-5 flex flex-col items-center">
-            <div ref={ctaRef} className="flex flex-wrap items-center justify-center gap-3 md:-translate-y-1">
-              <a href="#contact" className="btn-blue rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2 shadow-[0_22px_50px_-22px_rgba(0,71,255,0.55)]">
-                Start Your Project <ArrowUpRight size={16} />
+            <div
+              ref={ctaRef}
+              className="grid w-full max-w-[460px] grid-cols-1 gap-3 sm:max-w-[520px] sm:grid-cols-2"
+            >
+              <a
+                href="#contact"
+                className="btn-blue inline-flex h-14 w-full items-center justify-center gap-2 rounded-full border border-transparent px-6 text-[15px] font-medium leading-none shadow-[0_18px_38px_-20px_rgba(0,71,255,0.42)]"
+              >
+                <span>Start Your Project</span>
+                <ArrowUpRight size={16} className="shrink-0" />
               </a>
-              <a href="#contact" className="btn-ghost rounded-full px-6 py-3.5 text-[15px] font-medium inline-flex items-center gap-2 bg-[color:var(--surface)]/60 backdrop-blur-md">
-                <Calendar size={15} /> Book a Free Call
+              <a
+                href="#contact"
+                className="btn-ghost inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[color:var(--surface)]/60 px-6 text-[15px] font-medium leading-none backdrop-blur-md"
+              >
+                <Calendar size={15} className="shrink-0" />
+                <span>Book a Free Call</span>
               </a>
             </div>
 
-            <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-3 rounded-full bg-[color:var(--surface)]/45 px-3 py-2 backdrop-blur-sm mono text-[11px] text-[var(--muted)]">
+            <div className="mt-8 inline-flex flex-wrap items-center justify-center gap-3 rounded-full bg-[color:var(--surface)]/45 px-4 py-2.5 backdrop-blur-sm border hairline mono text-[11px] text-[var(--muted)] text-center shadow-sm">
               <span className="flex -space-x-2">
-                <span className="w-7 h-7 rounded-full bg-[var(--blue)] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">RK</span>
-                <span className="w-7 h-7 rounded-full bg-[var(--ink)] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">PS</span>
-                <span className="w-7 h-7 rounded-full bg-[#10B981] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">AV</span>
-                <span className="w-7 h-7 rounded-full bg-[#F59E0B] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">+</span>
+                <span className="w-8 h-8 rounded-full bg-[var(--blue)] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">RK</span>
+                <span className="w-8 h-8 rounded-full bg-[var(--ink)] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">PS</span>
+                <span className="w-8 h-8 rounded-full bg-[#10B981] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold">AV</span>
+                <span className="w-8 h-8 rounded-full bg-[#F59E0B] border-2 border-[var(--surface)] text-white grid place-items-center text-[10px] font-semibold shadow-sm">+</span>
               </span>
-              <span>Trusted by 40+ founders worldwide</span>
+              <span className="px-1">Trusted by 40+ founders worldwide</span>
             </div>
           </div>
 
