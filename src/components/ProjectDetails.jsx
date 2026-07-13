@@ -19,6 +19,7 @@ import {
   RefreshCw
 } from "lucide-react";
 import { projectDetails } from "../projectDetails";
+import Footer from "./Footer";
 
 export default function ProjectDetails() {
   const { slug } = useParams();
@@ -635,11 +636,12 @@ export default function ProjectDetails() {
           <p className="max-w-md text-[var(--muted)] mb-8 text-sm md:text-base">
             We deliver modular backends, microservices architecture, and clean high-fidelity Next.js web applications in record time.
           </p>
-          <a href="#contact" className="btn-blue rounded-full px-6 py-3 text-sm inline-flex items-center gap-2">
+          <a href="/#contact" className="btn-blue rounded-full px-6 py-3 text-sm inline-flex items-center gap-2">
             Let's Talk Architecture <ArrowRight size={16} />
           </a>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

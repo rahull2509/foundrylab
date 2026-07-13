@@ -23,6 +23,25 @@ import { Toaster } from "./components/ui/toaster";
 import ProjectDetails from "./components/ProjectDetails";
 
 function Home() {
+  return (
+    <main>
+      <Hero />
+      <TrustedBy />
+      <Services />
+      <Marquee items={["Build Fast", "Ship Fast", "Scale Fast", "Build Smart", "Ship Real"]} big />
+      <Work />
+      <Process />
+      <Marquee items={["Idea → MVP → Scale", "Fast Delivery", "Founder Friendly", "Built to Last"]} dark />
+      <WhyUs />
+      <Pricing />
+      <Testimonials />
+      <CTA />
+      <Footer />
+    </main>
+  );
+}
+
+function App() {
   useEffect(() => {
     const isMobileLike = window.matchMedia("(max-width: 1024px), (pointer: coarse)").matches;
     let lenis = null;
@@ -71,39 +90,20 @@ function Home() {
   }, []);
 
   return (
-    <div className="App">
-      <Loader />
-      <Cursor />
-      <SideRail />
-      <FloatingCTA />
-      <AIDesk />
-      <Navbar />
-      <main>
-        <Hero />
-        <TrustedBy />
-        <Services />
-        <Marquee items={["Build Fast", "Ship Fast", "Scale Fast", "Build Smart", "Ship Real"]} big />
-        <Work />
-        <Process />
-        <Marquee items={["Idea → MVP → Scale", "Fast Delivery", "Founder Friendly", "Built to Last"]} dark />
-        <WhyUs />
-        <Pricing />
-        <Testimonials />
-        <CTA />
-        <Footer />
-      </main>
-      <Toaster />
-    </div>
-  );
-}
-
-function App() {
-  return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/project/:slug" element={<ProjectDetails />} />
-      </Routes>
+      <div className="App">
+        <Loader />
+        <Cursor />
+        <SideRail />
+        <FloatingCTA />
+        <AIDesk />
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/project/:slug" element={<ProjectDetails />} />
+        </Routes>
+        <Toaster />
+      </div>
     </BrowserRouter>
   );
 }
