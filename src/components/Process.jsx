@@ -24,7 +24,7 @@ export default function Process() {
           start: "top top",
           end: () => "+=" + amount,
           pin: true,
-          scrub: 1,
+          scrub: 0.8,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
@@ -43,19 +43,19 @@ export default function Process() {
   }, []);
 
   return (
-    <section id="process" ref={sectionRef} className="bg-[var(--ink)] text-[var(--bg)] relative overflow-hidden">
-      <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)", backgroundSize: "80px 80px" }} />
+    <section id="process" ref={sectionRef} className="bg-[var(--bg)] text-[var(--ink)] relative overflow-hidden border-t border-b hairline">
+      <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "linear-gradient(to right, rgba(5,7,18,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(5,7,18,0.04) 1px, transparent 1px)", backgroundSize: "80px 80px" }} />
 
       <div className="relative pt-24 md:pt-32 pb-10">
         <div className="max-w-[1400px] mx-auto px-6 md:px-8">
           <div data-process-heading className="flex items-end justify-between flex-wrap gap-6">
             <div>
-              <div className="mono text-[12px] tracking-[0.2em] text-[var(--blue-2)] mb-5">// 02 — HOW WE WORK</div>
+              <div className="mono text-[12px] tracking-[0.2em] text-[var(--blue)] mb-5">// 02 — HOW WE WORK</div>
               <h2 className="serif text-5xl md:text-7xl tracking-tight leading-[1]">
-                Zero to Live in <span className="italic-serif text-[var(--blue-2)]">5 Steps</span>
+                Zero to Live in <span className="italic-serif text-[var(--blue)]">5 Steps</span>
               </h2>
             </div>
-            <div className="max-w-sm text-[var(--bg)]/60 text-base md:text-lg">
+            <div className="max-w-sm text-[var(--muted)] text-base md:text-lg">
               A battle-tested process refined across 40+ startups. Scroll → to see each step pinned.
             </div>
           </div>
@@ -64,25 +64,25 @@ export default function Process() {
 
       {/* Horizontal pinned track */}
       <div className="overflow-hidden">
-        <div ref={trackRef} className="flex flex-nowrap pl-6 md:pl-10 pb-20 md:pb-28" style={{ width: "max-content" }}>
+        <div ref={trackRef} className="flex flex-nowrap pl-6 md:pl-10 pb-20 md:pb-28" style={{ width: "max-content", willChange: "transform" }}>
           {processSteps.map((s, i) => (
             <div key={s.num} className="shrink-0 w-[82vw] md:w-[62vw] lg:w-[52vw] pr-6 md:pr-10">
-              <div className="card-dark border-[#1f2340] p-8 md:p-14 h-[70vh] min-h-[480px] flex flex-col justify-between relative overflow-hidden">
-                <div className="absolute -right-24 -bottom-24 w-[400px] h-[400px] rounded-full" style={{ background: "radial-gradient(circle, rgba(0,71,255,0.35), transparent 70%)", filter: "blur(40px)" }} />
+              <div className="card p-8 md:p-14 h-[70vh] min-h-[480px] flex flex-col justify-between relative overflow-hidden shadow-sm bg-[var(--surface)] hover:shadow-md transition-shadow duration-300">
+                <div className="absolute -right-24 -bottom-24 w-[400px] h-[400px] rounded-full" style={{ background: "radial-gradient(circle, rgba(0,71,255,0.08), transparent 70%)", filter: "blur(40px)" }} />
                 <div className="relative flex items-start justify-between">
-                  <div className="mono text-[12px] tracking-widest text-[var(--bg)]/50">
+                  <div className="mono text-[12px] tracking-widest text-[var(--muted)]">
                     STEP {i + 1} / {processSteps.length}
                   </div>
-                  <div className="mono text-[12px] tracking-widest text-[var(--blue-2)]">
+                  <div className="mono text-[12px] tracking-widest text-[var(--blue)] font-medium">
                     {i === 0 ? "DAY 01" : i === 1 ? "DAY 02–03" : i === 2 ? "WEEK 01" : i === 3 ? "WEEK 02–04" : "LAUNCH"}
                   </div>
                 </div>
-                <div className="relative step-number text-[var(--bg)]">
+                <div className="relative step-number text-[var(--ink)] opacity-[0.03]">
                   {s.num}
                 </div>
                 <div className="relative">
-                  <h3 className="serif text-4xl md:text-6xl mb-4">{s.title}</h3>
-                  <p className="text-[var(--bg)]/70 text-base md:text-lg leading-relaxed max-w-md">{s.desc}</p>
+                  <h3 className="serif text-4xl md:text-6xl mb-4 text-[var(--ink)]">{s.title}</h3>
+                  <p className="text-[var(--muted)] text-base md:text-lg leading-relaxed max-w-md">{s.desc}</p>
                 </div>
               </div>
             </div>

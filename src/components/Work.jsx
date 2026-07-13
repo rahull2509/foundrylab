@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { projects } from "../mock";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -39,7 +40,7 @@ export default function Work() {
 
         <div>
           {projects.map((p, i) => (
-            <a key={p.id} href="#" data-work-row className="group block border-t hairline py-10 md:py-12 last:border-b">
+            <Link key={p.id} to={`/project/${p.slug}`} data-work-row className="group block border-t hairline py-10 md:py-12 last:border-b">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                 <div className="md:col-span-1 mono text-[12px] text-[var(--muted)]">0{i + 1}</div>
                 <div className="md:col-span-3">
@@ -66,10 +67,11 @@ export default function Work() {
                   <div className="absolute top-0 right-0 w-60 h-60 rounded-full bg-white/10 -translate-y-24 translate-x-24" />
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
     </section>
   );
 }
+

@@ -56,30 +56,34 @@ export const processSteps = [
 
 export const projects = [
   {
-    id: 1,
-    tags: ["SaaS", "Next.js", "Stripe"],
+    id: "fyndkaro",
+    slug: "fyndkaro",
+    tags: ["Next.js", "TypeScript", "Monolith", "Co-Living"],
+    name: "FyndKaro",
+    desc: "All-in-one broker-free stay, roommate, mess, and cook discovery platform for students and professionals. Handles listing approvals, area-based notifications, and real-time chat.",
+    meta: "Full Stack Build • 6 Weeks",
+    accent: "#E5ECFF",
+  },
+  {
+    id: "verifydev",
+    slug: "verifydev",
+    tags: ["Microservices", "Go", "gRPC", "RabbitMQ", "Gemini AI"],
+    name: "VerifyDev",
+    desc: "Developer verification and recruitment engine. Clones GitHub repositories, extracts skills with Gemini AI, computes Aura scores, and routes service calls over gRPC with 10x lower latency.",
+    meta: "Core Backend & Microservices Architecture • 8 Weeks",
+    accent: "#EDF1F7",
+  },
+  {
+    id: "analyticspulse",
+    slug: "analyticspulse",
+    tags: ["SaaS", "Next.js", "Stripe", "Analytics"],
     name: "AnalyticsPulse",
-    desc: "Real-time analytics dashboard for D2C brands. 0 \u2192 1,200 users in 3 months post-launch.",
+    desc: "Real-time analytics dashboard for D2C brands. Tracks user behaviors, retention, and cohorts with sub-second page loads. 0 → 1,200 users in 3 months post-launch.",
     meta: "MVP built in 3 weeks",
     accent: "#D6C9B0",
   },
-  {
-    id: 2,
-    tags: ["Marketplace", "React", "Node.js"],
-    name: "FreelanceForge",
-    desc: "B2B freelancer-client marketplace with escrow payments. Raised \u20B980L pre-seed.",
-    meta: "Full build in 6 weeks",
-    accent: "#C9B897",
-  },
-  {
-    id: 3,
-    tags: ["AI Tool", "OpenAI", "Python"],
-    name: "DocuMind AI",
-    desc: "AI-powered document intelligence for legal teams. 500+ enterprise signups at launch.",
-    meta: "MVP built in 4 weeks",
-    accent: "#B8A67D",
-  },
 ];
+
 
 export const whyUs = [
   { title: "Fast Delivery", desc: "MVP in 2\u20134 weeks guaranteed. We move at startup speed, not agency speed.", icon: "Zap" },

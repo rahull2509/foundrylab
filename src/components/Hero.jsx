@@ -262,7 +262,7 @@ export default function Hero() {
           <div className="mt-5 flex flex-col items-center">
             <div
               ref={ctaRef}
-              className="grid w-full max-w-[460px] grid-cols-1 gap-3 sm:max-w-[520px] sm:grid-cols-2"
+              className="grid w-full max-w-[460px] grid-cols-1 gap-3 sm:max-w-[520px] sm:grid-cols-2 items-center"
             >
               <a
                 href="#contact"

@@ -134,7 +134,7 @@ html.lenis { height: auto; }
 .btn-blue {
   background: var(--blue);
   color: #fff;
-  transition: background 250ms ease, transform 250ms ease, box-shadow 250ms ease;
+  transition: background 250ms ease, box-shadow 250ms ease;
   position: relative;
   overflow: hidden;
 }

@@ -20,6 +20,7 @@ import Testimonials from "./components/Testimonials";
 import CTA from "./components/CTA";
 import Footer from "./components/Footer";
 import { Toaster } from "./components/ui/toaster";
+import ProjectDetails from "./components/ProjectDetails";
 
 function Home() {
   useEffect(() => {
@@ -82,8 +83,8 @@ function Home() {
         <TrustedBy />
         <Services />
         <Marquee items={["Build Fast", "Ship Fast", "Scale Fast", "Build Smart", "Ship Real"]} big />
-        <Process />
         <Work />
+        <Process />
         <Marquee items={["Idea → MVP → Scale", "Fast Delivery", "Founder Friendly", "Built to Last"]} dark />
         <WhyUs />
         <Pricing />
@@ -101,6 +102,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/project/:slug" element={<ProjectDetails />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { navLinks } from "../mock";
 
 export default function Navbar() {
@@ -28,6 +29,10 @@ export default function Navbar() {
     };
   }, [open]);
 
+  const getHref = (href) => {
+    return href.startsWith("#") ? `/${href}` : href;
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       <div className="px-4 md:px-6 pt-4">
@@ -38,17 +43,17 @@ export default function Navbar() {
               : "bg-[color:var(--surface)]/70 backdrop-blur-md"
           }`}
         >
-          <a href="#" className="flex items-center gap-2 shrink-0">
+          <Link to="/" className="flex items-center gap-2 shrink-0">
             <div className="w-8 h-8 rounded-lg bg-[var(--ink)] grid place-items-center relative overflow-hidden">
               <div className="absolute inset-0 bg-[var(--blue)] origin-left scale-x-0 hover:scale-x-100 transition-transform duration-500" />
               <span className="relative text-white text-sm font-bold">F.</span>
             </div>
             <span className="serif text-xl md:text-2xl tracking-tight">FoundryLab</span>
-          </a>
+          </Link>
 
           <nav className="hidden md:flex items-center justify-center gap-7">
             {navLinks.map((l) => (
-              <a key={l.label} href={l.href} className="link-underline text-sm text-[var(--ink)]/80 hover:text-[var(--ink)]">
+              <a key={l.label} href={getHref(l.href)} className="link-underline text-sm text-[var(--ink)]/80 hover:text-[var(--ink)]">
                 {l.label}
               </a>
             ))}
@@ -59,7 +64,7 @@ export default function Navbar() {
               <span className="w-2 h-2 rounded-full bg-green-500 pulse-dot" />
               AVAILABLE Q3
             </div>
-            <a href="#contact" className="hidden md:inline-flex items-center gap-2 btn-blue rounded-full px-4 py-2 text-sm whitespace-nowrap">
+            <a href={getHref("#contact")} className="hidden md:inline-flex items-center gap-2 btn-blue rounded-full px-4 py-2 text-sm whitespace-nowrap">
               Start Project <ArrowUpRight size={16} />
             </a>
             <button 
@@ -83,7 +88,7 @@ export default function Navbar() {
           {navLinks.map((l, i) => (
             <a 
               key={l.label} 
-              href={l.href} 
+              href={getHref(l.href)} 
               onClick={() => setOpen(false)} 
               className={`text-2xl font-medium text-[var(--ink)] py-4 border-b hairline flex items-center justify-between transition-all duration-500 ${
                 open ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
@@ -101,7 +106,7 @@ export default function Navbar() {
           style={{ transitionDelay: open ? `${navLinks.length * 100 + 100}ms` : '0ms' }}
         >
           <a 
-            href="#contact" 
+            href={getHref("#contact")} 
             onClick={() => setOpen(false)}
             className="btn-blue w-full rounded-full px-6 py-4 text-base inline-flex items-center justify-center gap-2"
           >
@@ -112,3 +117,4 @@ export default function Navbar() {
     </header>
   );
 }
+
