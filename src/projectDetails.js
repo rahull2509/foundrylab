@@ -134,7 +134,7 @@ export const projectDetails = {
           type: "Client",
           tech: "Next.js / React Native",
           description: "User & Recruiter web applications and mobile apps.",
-          x: 50, "y": 10,
+          x: 50, y: 8,
           port: "N/A"
         },
         {
@@ -143,7 +143,7 @@ export const projectDetails = {
           type: "Gateway",
           tech: "Nginx (Reverse Proxy)",
           description: "Handles SSL termination, CORS, rate limiting, and route proxying.",
-          x: 50, "y": 30,
+          x: 50, y: 22,
           port: "Port 8000"
         },
         {
@@ -152,7 +152,7 @@ export const projectDetails = {
           type: "Service",
           tech: "TypeScript, Express",
           description: "Manages GitHub OAuth, session caching, and JWT issuing.",
-          x: 10, "y": 55,
+          x: 10, y: 42,
           port: "Port 3001 (HTTP)"
         },
         {
@@ -161,7 +161,7 @@ export const projectDetails = {
           type: "Service",
           tech: "TypeScript, Express + gRPC",
           description: "Core profile management, skills CRUD, and experiences database.",
-          x: 50, "y": 55,
+          x: 50, y: 42,
           port: "Port 3002 (HTTP) / Port 50051 (gRPC)"
         },
         {
@@ -170,7 +170,7 @@ export const projectDetails = {
           type: "Service",
           tech: "TypeScript, Express",
           description: "Handles job listings, applications, recruiter APIs, and messaging.",
-          x: 90, "y": 55,
+          x: 90, y: 42,
           port: "Port 3004 (HTTP)"
         },
         {
@@ -179,7 +179,7 @@ export const projectDetails = {
           type: "Service",
           tech: "TypeScript + gRPC Client",
           description: "Candidate search indexer, list management, and gRPC profile fetcher.",
-          x: 50, "y": 80,
+          x: 50, y: 60,
           port: "Port 3005 (HTTP) / Port 50054 (gRPC)"
         },
         {
@@ -188,7 +188,7 @@ export const projectDetails = {
           type: "Worker",
           tech: "Go (Golang)",
           description: "Clones repositories, extracts structure, and runs Gemini AI skill analysis.",
-          x: 10, "y": 105,
+          x: 10, y: 78,
           port: "Port 8001 (HTTP)"
         },
         {
@@ -197,7 +197,7 @@ export const projectDetails = {
           type: "Worker",
           tech: "TypeScript (Worker)",
           description: "Consumes completed analysis and calculates candidate Aura scores.",
-          x: 50, "y": 105,
+          x: 50, y: 78,
           port: "N/A (RabbitMQ consumer)"
         },
         {
@@ -206,7 +206,7 @@ export const projectDetails = {
           type: "Service",
           tech: "Go (Golang)",
           description: "Generates high-quality PDF resumes dynamically.",
-          x: 90, "y": 105,
+          x: 90, y: 78,
           port: "Port 8003 (HTTP)"
         },
         {
@@ -215,7 +215,7 @@ export const projectDetails = {
           type: "Database",
           tech: "Redis",
           description: "Caches sessions, API rate limits, and temporary developer lookups.",
-          x: 10, "y": 130,
+          x: 10, y: 94,
           port: "Port 6379"
         },
         {
@@ -224,7 +224,7 @@ export const projectDetails = {
           type: "Queue",
           tech: "RabbitMQ",
           description: "Asynchronous message broker handling event-driven tasks.",
-          x: 50, "y": 130,
+          x: 50, y: 94,
           port: "Port 5672 (AMQP)"
         },
         {
@@ -233,7 +233,7 @@ export const projectDetails = {
           type: "Database",
           tech: "MongoDB Atlas",
           description: "Stores document collections for users, projects, and jobs.",
-          x: 90, "y": 130,
+          x: 90, y: 94,
           port: "Cloud (Prisma)"
         }
       ],

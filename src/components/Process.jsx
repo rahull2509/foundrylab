@@ -10,6 +10,9 @@ export default function Process() {
   const trackRef = useRef(null);
 
   useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 1024px)").matches;
+    if (isMobile) return;
+
     const ctx = gsap.context(() => {
       const track = trackRef.current;
       if (!track) return;
@@ -63,13 +66,13 @@ export default function Process() {
       </div>
 
       {/* Horizontal pinned track */}
-      <div className="overflow-hidden">
-        <div ref={trackRef} className="flex flex-nowrap pl-6 md:pl-10 pb-20 md:pb-28" style={{ width: "max-content", willChange: "transform" }}>
+      <div className="overflow-x-auto lg:overflow-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory scroll-smooth">
+        <div ref={trackRef} className="flex flex-nowrap pl-6 md:pl-10 pb-28 md:pb-36" style={{ width: "max-content", willChange: "transform" }}>
           {processSteps.map((s, i) => (
-            <div key={s.num} className="shrink-0 w-[82vw] md:w-[62vw] lg:w-[52vw] pr-6 md:pr-10">
-              <div className="card p-8 md:p-14 h-[70vh] min-h-[480px] flex flex-col justify-between relative overflow-hidden shadow-sm bg-[var(--surface)] hover:shadow-md transition-shadow duration-300">
+            <div key={s.num} className="shrink-0 w-[82vw] md:w-[62vw] lg:w-[52vw] pr-6 md:pr-10 snap-center">
+              <div className="card p-8 md:p-14 h-[58vh] min-h-[480px] flex flex-col justify-between relative overflow-hidden shadow-sm bg-[var(--surface)] hover:shadow-md transition-shadow duration-300">
                 <div className="absolute -right-24 -bottom-24 w-[400px] h-[400px] rounded-full" style={{ background: "radial-gradient(circle, rgba(0,71,255,0.08), transparent 70%)", filter: "blur(40px)" }} />
-                <div className="relative flex items-start justify-between">
+                <div className="relative z-10 flex items-start justify-between">
                   <div className="mono text-[12px] tracking-widest text-[var(--muted)]">
                     STEP {i + 1} / {processSteps.length}
                   </div>
@@ -77,10 +80,10 @@ export default function Process() {
                     {i === 0 ? "DAY 01" : i === 1 ? "DAY 02–03" : i === 2 ? "WEEK 01" : i === 3 ? "WEEK 02–04" : "LAUNCH"}
                   </div>
                 </div>
-                <div className="relative step-number text-[var(--ink)] opacity-[0.03]">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 step-number text-[var(--ink)] opacity-[0.03] select-none pointer-events-none z-0">
                   {s.num}
                 </div>
-                <div className="relative">
+                <div className="relative z-10">
                   <h3 className="serif text-4xl md:text-6xl mb-4 text-[var(--ink)]">{s.title}</h3>
                   <p className="text-[var(--muted)] text-base md:text-lg leading-relaxed max-w-md">{s.desc}</p>
                 </div>

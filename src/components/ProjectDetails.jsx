@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { 
   ArrowLeft, 
@@ -16,7 +17,10 @@ import {
   HelpCircle,
   Zap,
   ArrowRight,
-  RefreshCw
+  RefreshCw,
+  Maximize2,
+  Minimize2,
+  X
 } from "lucide-react";
 import { projectDetails } from "../projectDetails";
 import Footer from "./Footer";
@@ -31,6 +35,18 @@ export default function ProjectDetails() {
   const [animationPath, setAnimationPath] = useState([]);
   const [animatingStep, setAnimatingStep] = useState(-1);
   const [simulationActive, setSimulationActive] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  useEffect(() => {
+    if (isFullScreen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isFullScreen]);
 
   useEffect(() => {
     // Scroll to top on load
@@ -62,6 +78,7 @@ export default function ProjectDetails() {
   // Animation simulator for VerifyDev repository scanning flow
   const runSimulation = () => {
     if (simulationActive) return;
+    setIsFullScreen(true);
     setSimulationActive(true);
     
     // Path: frontend -> gateway -> user-service -> rabbitmq -> project-analyzer -> rabbitmq -> aura-processor -> mongodb
@@ -110,11 +127,312 @@ export default function ProjectDetails() {
   };
 
   const getNodeCoords = (node) => {
-    // Render coordinates in percentage terms
     return {
       left: `${node.x}%`,
       top: `${node.y}%`
     };
+  };
+
+  const renderVerifyDevArchitecture = () => {
+    return (
+      <div className={isFullScreen ? "fixed inset-0 z-[9999] bg-slate-950 text-white p-6 md:p-10 overflow-y-auto flex flex-col gap-6" : "grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full"}>
+        {isFullScreen && (
+          <div className="flex justify-between items-center border-b border-slate-800 pb-4">
+            <div>
+              <h3 className="serif text-xl md:text-3xl font-medium text-white">VerifyDev Hybrid Architecture Canvas</h3>
+              <p className="text-xs text-slate-400 mt-1">
+                JSON-driven layout mapping physical nodes, protocols, and microservice connections.
+              </p>
+            </div>
+            <button
+              onClick={() => setIsFullScreen(false)}
+              className="p-2.5 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center justify-center"
+              title="Exit Fullscreen"
+            >
+              <X size={18} />
+            </button>
+          </div>
+        )}
+
+        <div className={isFullScreen ? "flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 min-h-0 items-stretch" : "grid grid-cols-1 lg:grid-cols-12 gap-8 items-start col-span-12 w-full"}>
+          <div className={isFullScreen ? "lg:col-span-8 flex flex-col h-full min-h-[500px]" : "lg:col-span-8"}>
+            <div className={`bg-[var(--surface)] border hairline rounded-3xl p-6 relative ${
+              isFullScreen ? "flex-1 flex flex-col !bg-slate-900/45 border-slate-800 text-white" : ""
+            }`}>
+              {!isFullScreen && (
+                <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
+                  <div>
+                    <h3 className="serif text-xl md:text-2xl font-medium">VerifyDev Hybrid Architecture Canvas</h3>
+                    <p className="text-xs text-[var(--muted)] mt-1">
+                      JSON-driven layout mapping physical nodes, protocols, and microservice connections.
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={runSimulation}
+                      disabled={simulationActive}
+                      className={`px-4 py-2 rounded-full inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
+                        simulationActive 
+                          ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 cursor-not-allowed" 
+                          : "bg-[var(--ink)] text-[var(--bg)] hover:bg-[var(--blue)] hover:text-white"
+                      }`}
+                    >
+                      <Play size={12} className={simulationActive ? "animate-pulse" : ""} />
+                      {simulationActive ? "Analyzing Repo..." : "Simulate Code Scan Flow"}
+                    </button>
+
+                    <button
+                      onClick={() => setIsFullScreen(true)}
+                      className="p-2 rounded-full bg-[var(--surface-2)] text-[var(--ink)] border hairline hover:bg-[var(--blue-soft)] hover:text-[var(--blue)] transition-colors"
+                      title="View Fullscreen"
+                    >
+                      <Maximize2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Interactive Node Graph Canvas Scroll Wrapper */}
+              <div className="w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden rounded-2xl border border-slate-200 dark:border-slate-800">
+                <div 
+                  ref={containerRef}
+                  className={`min-w-[950px] lg:min-w-0 lg:w-full bg-slate-900/5 dark:bg-slate-900/40 relative overflow-hidden ${
+                    isFullScreen ? "flex-1 min-h-[500px]" : "h-[620px]"
+                  }`}
+                >
+                {/* Grid background for canvas */}
+                <div className="absolute inset-0 opacity-15 pointer-events-none" 
+                  style={{
+                    backgroundImage: "radial-gradient(#1e293b 1px, transparent 1px)",
+                    backgroundSize: "20px 20px"
+                  }} 
+                />
+
+                {/* SVG connections overlay */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+                  <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="28" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b" />
+                    </marker>
+                    <marker id="arrow-grpc" viewBox="0 0 10 10" refX="28" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--blue)" />
+                    </marker>
+                    <marker id="arrow-rabbitmq" viewBox="0 0 10 10" refX="28" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="#f97316" />
+                    </marker>
+                  </defs>
+
+                  {project.architecture.connections.map((c, idx) => {
+                    const fromNode = project.architecture.nodes.find(n => n.id === c.from);
+                    const toNode = project.architecture.nodes.find(n => n.id === c.to);
+                    if (!fromNode || !toNode) return null;
+
+                    const x1 = `${fromNode.x}%`;
+                    const y1 = `${fromNode.y}%`;
+                    const x2 = `${toNode.x}%`;
+                    const y2 = `${toNode.y}%`;
+
+                    const pathIndexFrom = animationPath.indexOf(c.from);
+                    const pathIndexTo = animationPath.indexOf(c.to);
+                    const isActive = animatingStep !== -1 && 
+                                     pathIndexFrom !== -1 && 
+                                     pathIndexTo !== -1 && 
+                                     pathIndexTo === pathIndexFrom + 1 && 
+                                     animatingStep === pathIndexTo;
+
+                    let strokeColor = "#64748b";
+                    let strokeWidth = "1.5";
+                    let strokeDash = "none";
+                    let marker = "url(#arrow)";
+
+                    if (c.type === "⚡ gRPC") {
+                      strokeColor = "var(--blue)";
+                      strokeWidth = "2";
+                      marker = "url(#arrow-grpc)";
+                    } else if (c.type.includes("RabbitMQ")) {
+                      strokeColor = "#f97316";
+                      strokeDash = "4 4";
+                      marker = "url(#arrow-rabbitmq)";
+                    }
+
+                    if (isActive) {
+                      strokeColor = "#10b981";
+                      strokeWidth = "3";
+                      strokeDash = "none";
+                    }
+
+                    return (
+                      <g key={idx}>
+                        <line
+                          x1={x1}
+                          y1={y1}
+                          x2={x2}
+                          y2={y2}
+                          stroke={strokeColor}
+                          strokeWidth={strokeWidth}
+                          strokeDasharray={strokeDash}
+                          markerEnd={marker}
+                          className="transition-all duration-500"
+                        />
+                      </g>
+                    );
+                  })}
+                </svg>
+
+                {project.architecture.nodes.map((n) => {
+                  const isSelected = selectedNode?.id === n.id;
+                  const isSimulationActive = animationPath[animatingStep] === n.id;
+                  
+                  let borderStyle = "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200";
+                  if (isSelected) {
+                    borderStyle = "border-[var(--blue)] ring-2 ring-[var(--blue)]/30 bg-[var(--blue-soft)] dark:bg-slate-800 text-[var(--blue)]";
+                  }
+                  if (isSimulationActive) {
+                    borderStyle = "border-emerald-500 ring-4 ring-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold";
+                  }
+
+                  return (
+                    <button
+                      key={n.id}
+                      onClick={() => setSelectedNode(n)}
+                      className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-xl border p-2.5 shadow-sm text-left transition-all duration-300 flex items-center gap-2 max-w-[170px] z-10 hover:scale-105 hover:shadow-md ${borderStyle}`}
+                      style={getNodeCoords(n)}
+                    >
+                      <div className="p-1 rounded bg-slate-100 dark:bg-slate-700 shrink-0">
+                        {getIconForType(n.type)}
+                      </div>
+                      <div className="overflow-hidden">
+                        <h4 className="text-[10px] md:text-xs font-semibold truncate leading-tight">{n.name}</h4>
+                        <p className="text-[8px] text-slate-400 truncate mt-0.5">{n.tech.split(",")[0]}</p>
+                      </div>
+                      
+                      <span className="absolute top-1 right-1 flex h-1.5 w-1.5">
+                        <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                          isSimulationActive ? "bg-emerald-400" : isSelected ? "bg-[var(--blue)]" : "bg-green-400"
+                        }`} />
+                        <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${
+                          isSimulationActive ? "bg-emerald-500" : isSelected ? "bg-[var(--blue)]" : "bg-green-500"
+                        }`} />
+                      </span>
+                    </button>
+                  );
+                })}
+
+                {simulationActive && (
+                  <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-slate-900/90 border border-emerald-500/30 rounded-lg p-2.5 max-w-xs text-[10px] text-slate-700 dark:text-slate-300 z-20 flex items-center gap-2.5 animate-pulse">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
+                    <span>
+                      <strong>Step {animatingStep + 1}/8:</strong>{" "}
+                      {animatingStep === 0 && "Frontend fires code analyze request."}
+                      {animatingStep === 1 && "Nginx Gateway forwards request to User Service."}
+                      {animatingStep === 2 && "User Service inserts pending project and posts event."}
+                      {animatingStep === 3 && "RabbitMQ buffers event and queues job queue."}
+                      {animatingStep === 4 && "Go Project Analyzer worker clones repo and calls Gemini AI."}
+                      {animatingStep === 5 && "Go Analyzer publishes structured skill metrics back."}
+                      {animatingStep === 6 && "Aura Processor updates developer score in DB."}
+                      {animatingStep === 7 && "Completed status & Aura score saved in MongoDB Atlas."}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div className={isFullScreen ? "lg:col-span-4 flex flex-col gap-5 h-full overflow-y-auto" : "lg:col-span-4 flex flex-col gap-5"}>
+            <h3 className={`serif text-xl md:text-2xl font-medium block ${isFullScreen ? "text-white" : ""}`}>// Node Inspector</h3>
+            
+            {selectedNode ? (
+              <div className={`bg-[var(--surface)] border hairline rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden ${
+                isFullScreen ? "!bg-slate-900/40 border-slate-800 text-white" : ""
+              }`}>
+                <div className="flex justify-between items-start">
+                  <span className={`mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded ${
+                    isFullScreen ? "bg-slate-800 text-slate-300" : "bg-slate-100 dark:bg-slate-800 text-[var(--muted)]"
+                  }`}>
+                    {selectedNode.type} Node
+                  </span>
+                  <span className="mono text-[10px] text-[var(--blue)] font-semibold">{selectedNode.port}</span>
+                </div>
+                
+                <div>
+                  <h4 className="serif text-2xl font-semibold mb-1">{selectedNode.name}</h4>
+                  <span className={`mono text-[10px] ${isFullScreen ? "text-slate-400" : "text-[var(--muted)]"}`}>{selectedNode.tech}</span>
+                </div>
+
+                <p className={`text-sm leading-relaxed mt-2 p-4 rounded-xl border ${
+                  isFullScreen 
+                    ? "bg-slate-950/60 border-slate-800 text-slate-300" 
+                    : "bg-slate-50 dark:bg-slate-900/50 border-slate-100 dark:border-slate-800 text-[var(--muted-2)]"
+                }`}>
+                  {selectedNode.description}
+                </p>
+
+                <div className="mt-2 flex flex-col gap-3">
+                  <span className={`mono text-[10px] uppercase tracking-widest ${isFullScreen ? "text-slate-400" : "text-[var(--muted)]"}`}>// Connection Contracts</span>
+                  <div className="flex flex-col gap-2">
+                    {project.architecture.connections
+                      .filter(c => c.from === selectedNode.id || c.to === selectedNode.id)
+                      .map((c, i) => {
+                        const isFrom = c.from === selectedNode.id;
+                        const targetNode = project.architecture.nodes.find(n => n.id === (isFrom ? c.to : c.from));
+                        return (
+                          <div key={i} className={`flex items-center justify-between text-xs border-b hairline pb-2 last:border-b-0 ${
+                            isFullScreen ? "border-slate-800" : ""
+                          }`}>
+                            <span className={isFullScreen ? "text-slate-300" : "text-slate-400"}>
+                              {isFrom ? "→ to " : "← from "}<strong>{targetNode?.name}</strong>
+                            </span>
+                            <span className={`mono text-[9px] px-2 py-0.5 rounded ${
+                              c.type === "⚡ gRPC" 
+                                ? "bg-[var(--blue-soft)] text-[var(--blue)]" 
+                                : c.type.includes("RabbitMQ") 
+                                  ? "bg-orange-500/10 text-orange-500" 
+                                  : isFullScreen 
+                                    ? "bg-slate-800 text-slate-300" 
+                                    : "bg-slate-100 dark:bg-slate-800 text-[var(--muted)]"
+                            }`}>
+                              {c.type}
+                            </span>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className={`bg-[var(--surface)] border hairline rounded-3xl p-6 text-center py-12 ${
+                isFullScreen ? "!bg-slate-900/40 border-slate-800 text-slate-400" : "text-[var(--muted)]"
+              }`}>
+                <HelpCircle className="mx-auto mb-3 opacity-40" size={32} />
+                <p className="text-sm">Click on any node in the canvas map to inspect its details and endpoints.</p>
+              </div>
+            )}
+
+            <div className={`bg-[var(--surface)] border hairline rounded-3xl p-6 flex flex-col gap-3 ${
+              isFullScreen ? "!bg-slate-900/40 border-slate-800 text-white" : ""
+            }`}>
+              <span className={`mono text-[10px] uppercase tracking-wider block ${isFullScreen ? "text-slate-400" : "text-[var(--muted)]"}`}>// Protocol Legend</span>
+              <div className="flex flex-col gap-2 text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-0.5 bg-slate-500" />
+                  <span className={isFullScreen ? "text-slate-300" : ""}><strong>JSON/HTTP:</strong> Public REST client endpoints</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-0.5 bg-[var(--blue)]" />
+                  <span className={isFullScreen ? "text-slate-300" : ""}><strong>⚡ gRPC:</strong> Inter-service binary communication</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-0.5 border-t border-dashed border-orange-500" />
+                  <span className={isFullScreen ? "text-slate-300" : ""}><strong>RabbitMQ:</strong> Event-driven asynchronous worker tasks</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -336,256 +654,9 @@ export default function ProjectDetails() {
         {activeTab === "architecture" && (
           <div className="flex flex-col gap-8">
             {slug === "verifydev" ? (
-              /* High-fidelity interactive System Map for VerifyDev based on JSON */
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <div className="lg:col-span-8">
-                  <div className="bg-[var(--surface)] border hairline rounded-3xl p-6 relative">
-                    <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
-                      <div>
-                        <h3 className="serif text-xl md:text-2xl font-medium">VerifyDev Hybrid Architecture Canvas</h3>
-                        <p className="text-xs text-[var(--muted)] mt-1">
-                          JSON-driven layout mapping physical nodes, protocols, and microservice connections.
-                        </p>
-                      </div>
-                      
-                      <button
-                        onClick={runSimulation}
-                        disabled={simulationActive}
-                        className={`px-4 py-2 rounded-full inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
-                          simulationActive 
-                            ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 cursor-not-allowed" 
-                            : "bg-[var(--ink)] text-[var(--bg)] hover:bg-[var(--blue)] hover:text-white"
-                        }`}
-                      >
-                        <Play size={12} className={simulationActive ? "animate-pulse" : ""} />
-                        {simulationActive ? "Analyzing Repo..." : "Simulate Code Scan Flow"}
-                      </button>
-                    </div>
-
-                    {/* Interactive Node Graph Canvas */}
-                    <div 
-                      ref={containerRef}
-                      className="w-full h-[620px] bg-slate-900/5 dark:bg-slate-900/40 rounded-2xl relative overflow-hidden border border-slate-200 dark:border-slate-800"
-                    >
-                      {/* Grid background for canvas */}
-                      <div className="absolute inset-0 opacity-15 pointer-events-none" 
-                        style={{
-                          backgroundImage: "radial-gradient(#1e293b 1px, transparent 1px)",
-                          backgroundSize: "20px 20px"
-                        }} 
-                      />
-
-                      {/* SVG connections overlay */}
-                      <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-                        <defs>
-                          <marker id="arrow" viewBox="0 0 10 10" refX="28" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                            <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b" />
-                          </marker>
-                          <marker id="arrow-grpc" viewBox="0 0 10 10" refX="28" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                            <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--blue)" />
-                          </marker>
-                          <marker id="arrow-rabbitmq" viewBox="0 0 10 10" refX="28" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                            <path d="M 0 1 L 10 5 L 0 9 z" fill="#f97316" />
-                          </marker>
-                        </defs>
-
-                        {project.architecture.connections.map((c, idx) => {
-                          const fromNode = project.architecture.nodes.find(n => n.id === c.from);
-                          const toNode = project.architecture.nodes.find(n => n.id === c.to);
-                          if (!fromNode || !toNode) return null;
-
-                          // Coordinates as absolute values based on percentage
-                          const x1 = `${fromNode.x}%`;
-                          const y1 = `${fromNode.y}%`;
-                          const x2 = `${toNode.x}%`;
-                          const y2 = `${toNode.y}%`;
-
-                          // Check if this connection is currently active in the simulation path
-                          const pathIndexFrom = animationPath.indexOf(c.from);
-                          const pathIndexTo = animationPath.indexOf(c.to);
-                          const isActive = animatingStep !== -1 && 
-                                           pathIndexFrom !== -1 && 
-                                           pathIndexTo !== -1 && 
-                                           pathIndexTo === pathIndexFrom + 1 && 
-                                           animatingStep === pathIndexTo;
-
-                          let strokeColor = "#64748b"; // default slate
-                          let strokeWidth = "1.5";
-                          let strokeDash = "none";
-                          let marker = "url(#arrow)";
-
-                          if (c.type === "⚡ gRPC") {
-                            strokeColor = "var(--blue)";
-                            strokeWidth = "2";
-                            marker = "url(#arrow-grpc)";
-                          } else if (c.type.includes("RabbitMQ")) {
-                            strokeColor = "#f97316"; // orange
-                            strokeDash = "4 4";
-                            marker = "url(#arrow-rabbitmq)";
-                          }
-
-                          if (isActive) {
-                            strokeColor = "#10b981"; // active green
-                            strokeWidth = "3";
-                            strokeDash = "none";
-                          }
-
-                          return (
-                            <g key={idx}>
-                              <line
-                                x1={x1}
-                                y1={y1}
-                                x2={x2}
-                                y2={y2}
-                                stroke={strokeColor}
-                                strokeWidth={strokeWidth}
-                                strokeDasharray={strokeDash}
-                                markerEnd={marker}
-                                className="transition-all duration-500"
-                              />
-                            </g>
-                          );
-                        })}
-                      </svg>
-
-                      {/* Render Nodes as Interactive Buttons */}
-                      {project.architecture.nodes.map((n) => {
-                        const isSelected = selectedNode?.id === n.id;
-                        const isSimulationActive = animationPath[animatingStep] === n.id;
-                        
-                        let borderStyle = "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200";
-                        if (isSelected) {
-                          borderStyle = "border-[var(--blue)] ring-2 ring-[var(--blue)]/30 bg-[var(--blue-soft)] dark:bg-slate-800 text-[var(--blue)]";
-                        }
-                        if (isSimulationActive) {
-                          borderStyle = "border-emerald-500 ring-4 ring-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold";
-                        }
-
-                        return (
-                          <button
-                            key={n.id}
-                            onClick={() => setSelectedNode(n)}
-                            className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-xl border p-2.5 shadow-sm text-left transition-all duration-300 flex items-center gap-2 max-w-[170px] z-10 hover:scale-105 hover:shadow-md ${borderStyle}`}
-                            style={getNodeCoords(n)}
-                          >
-                            <div className="p-1 rounded bg-slate-100 dark:bg-slate-700 shrink-0">
-                              {getIconForType(n.type)}
-                            </div>
-                            <div className="overflow-hidden">
-                              <h4 className="text-[10px] md:text-xs font-semibold truncate leading-tight">{n.name}</h4>
-                              <p className="text-[8px] text-slate-400 truncate mt-0.5">{n.tech.split(",")[0]}</p>
-                            </div>
-                            
-                            {/* Blinking health/status dot */}
-                            <span className="absolute top-1 right-1 flex h-1.5 w-1.5">
-                              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                                isSimulationActive ? "bg-emerald-400" : isSelected ? "bg-[var(--blue)]" : "bg-green-400"
-                              }`} />
-                              <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${
-                                isSimulationActive ? "bg-emerald-500" : isSelected ? "bg-[var(--blue)]" : "bg-green-500"
-                              }`} />
-                            </span>
-                          </button>
-                        );
-                      })}
-
-                      {/* Simulation flow legend */}
-                      {simulationActive && (
-                        <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-slate-900/90 border border-emerald-500/30 rounded-lg p-2.5 max-w-xs text-[10px] text-slate-700 dark:text-slate-300 z-20 flex items-center gap-2.5 animate-pulse">
-                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
-                          <span>
-                            <strong>Step {animatingStep + 1}/8:</strong>{" "}
-                            {animatingStep === 0 && "Frontend fires code analyze request."}
-                            {animatingStep === 1 && "Nginx Gateway forwards request to User Service."}
-                            {animatingStep === 2 && "User Service inserts pending project and posts event."}
-                            {animatingStep === 3 && "RabbitMQ buffers event and queues job queue."}
-                            {animatingStep === 4 && "Go Project Analyzer worker clones repo and calls Gemini AI."}
-                            {animatingStep === 5 && "Go Analyzer publishes structured skill metrics back."}
-                            {animatingStep === 6 && "Aura Processor updates developer score in DB."}
-                            {animatingStep === 7 && "Completed status & Aura score saved in MongoDB Atlas."}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Node Metadata Inspector Panel */}
-                <div className="lg:col-span-4 flex flex-col gap-5">
-                  <h3 className="serif text-xl md:text-2xl font-medium block">// Node Inspector</h3>
-                  
-                  {selectedNode ? (
-                    <div className="bg-[var(--surface)] border hairline rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden">
-                      <div className="flex justify-between items-start">
-                        <span className="mono text-[10px] uppercase tracking-wider bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-[var(--muted)]">
-                          {selectedNode.type} Node
-                        </span>
-                        <span className="mono text-[10px] text-[var(--blue)] font-semibold">{selectedNode.port}</span>
-                      </div>
-                      
-                      <div>
-                        <h4 className="serif text-2xl font-semibold mb-1">{selectedNode.name}</h4>
-                        <span className="mono text-[10px] text-[var(--muted)]">{selectedNode.tech}</span>
-                      </div>
-
-                      <p className="text-sm text-[var(--muted-2)] leading-relaxed mt-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
-                        {selectedNode.description}
-                      </p>
-
-                      <div className="mt-2 flex flex-col gap-3">
-                        <span className="mono text-[10px] text-[var(--muted)] uppercase tracking-widest">// Connection Contracts</span>
-                        <div className="flex flex-col gap-2">
-                          {project.architecture.connections
-                            .filter(c => c.from === selectedNode.id || c.to === selectedNode.id)
-                            .map((c, i) => {
-                              const isFrom = c.from === selectedNode.id;
-                              const targetNode = project.architecture.nodes.find(n => n.id === (isFrom ? c.to : c.from));
-                              return (
-                                <div key={i} className="flex items-center justify-between text-xs border-b hairline pb-2 last:border-b-0">
-                                  <span className="text-slate-400">
-                                    {isFrom ? "→ to " : "← from "}<strong>{targetNode?.name}</strong>
-                                  </span>
-                                  <span className={`mono text-[9px] px-2 py-0.5 rounded ${
-                                    c.type === "⚡ gRPC" 
-                                      ? "bg-[var(--blue-soft)] text-[var(--blue)]" 
-                                      : c.type.includes("RabbitMQ") 
-                                        ? "bg-orange-500/10 text-orange-500" 
-                                        : "bg-slate-100 dark:bg-slate-800 text-[var(--muted)]"
-                                  }`}>
-                                    {c.type}
-                                  </span>
-                                </div>
-                              );
-                            })}
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="bg-[var(--surface)] border hairline rounded-3xl p-6 text-center text-[var(--muted)] py-12">
-                      <HelpCircle className="mx-auto mb-3 opacity-40" size={32} />
-                      <p className="text-sm">Click on any node in the canvas map to inspect its details and endpoints.</p>
-                    </div>
-                  )}
-
-                  <div className="bg-[var(--surface)] border hairline rounded-3xl p-6 flex flex-col gap-3">
-                    <span className="mono text-[10px] text-[var(--muted)] uppercase tracking-wider block">// Protocol Legend</span>
-                    <div className="flex flex-col gap-2 text-xs">
-                      <div className="flex items-center gap-2">
-                        <span className="w-3 h-0.5 bg-slate-500" />
-                        <span><strong>JSON/HTTP:</strong> Public REST client endpoints</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-3 h-0.5 bg-[var(--blue)]" />
-                        <span><strong>⚡ gRPC:</strong> Inter-service binary communication</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-3 h-0.5 border-t border-dashed border-orange-500" />
-                        <span><strong>RabbitMQ:</strong> Event-driven asynchronous worker tasks</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              isFullScreen 
+                ? createPortal(renderVerifyDevArchitecture(), document.body) 
+                : renderVerifyDevArchitecture()
             ) : (
               /* Simplified System Architecture list for FyndKaro and others */
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

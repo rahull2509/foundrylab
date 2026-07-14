@@ -56,8 +56,8 @@ html, body {
   letter-spacing: -0.011em;
 }
 
-@media (max-width: 768px) {
-  html, body { cursor: auto; }
+@media (max-width: 1024px) {
+  html, body { cursor: auto !important; }
 }
 
 .serif {
@@ -80,7 +80,7 @@ html, body {
   position: fixed;
   top: 0; left: 0;
   width: 8px; height: 8px;
-  background: var(--blue);
+  background: #ffffff;
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
@@ -92,15 +92,16 @@ html, body {
   position: fixed;
   top: 0; left: 0;
   width: 36px; height: 36px;
-  border: 1px solid var(--blue);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
   transition: width 300ms ease, height 300ms ease, border-color 200ms ease;
+  mix-blend-mode: difference;
 }
-.cursor-dot.hover { width: 14px; height: 14px; background: #fff; }
-.cursor-ring.hover { width: 64px; height: 64px; border-color: var(--blue); background: rgba(0,71,255,0.08); }
+.cursor-dot.hover { width: 14px; height: 14px; background: #ffffff; }
+.cursor-ring.hover { width: 64px; height: 64px; border-color: #ffffff; background: rgba(255, 255, 255, 0.1); }
 
 /* Scroll */
 html.lenis { height: auto; }
